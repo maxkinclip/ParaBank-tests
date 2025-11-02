@@ -25,7 +25,7 @@ public class ContactPage {
     }
 
     public SelenideElement submitToCustomerCareButton() {
-        return Selenide.$(byText("Send to Customer Care");
+        return Selenide.$(byText("Send to Customer Care"));
     }
 
     @Step("Fill name field with '{name}'")

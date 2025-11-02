@@ -18,7 +18,7 @@ public class OpenAccountPage {
     }
 
     public SelenideElement openNewAccountButton () {
-        return Selenide.$(byText("Open New Account");
+        return Selenide.$(byText("Open New Account"));
     }
 
     public SelenideElement openAccountResult() {
@@ -27,13 +27,13 @@ public class OpenAccountPage {
 
     @Step("Choose the type of account to open")
     public OpenAccountPage selectType(int index) {
-        selectTypeByIndex().selectOption(index);
+        selectTypeByIndex(index);
         return this;
     }
 
     @Step("Select account for the first deposit")
     public OpenAccountPage selectAccount(int index) {
-        selectAccountByIndex().selectOption(index);
+        selectAccountByIndex(index);
         return this;
     }
 

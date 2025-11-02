@@ -32,14 +32,14 @@ public class TransferFundsPage {
     }
 
     @Step("Choose the account you're going to withdraw the money from")
-    public TransferFundsPage selectType(int index) {
-        transferFromAccountByIndex().selectOption(index);
+    public TransferFundsPage transferFromAccount(int index) {
+        transferFromAccountByIndex(index);
         return this;
     }
 
     @Step("Choose the account you're going to deposit money to")
-    public TransferFundsPage selectType(int index) {
-        transferToAccountByIndex().selectOption(index);
+    public TransferFundsPage transferToAccount(int index) {
+        transferToAccountByIndex(index);
         return this;
     }
 
