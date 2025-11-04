@@ -2,6 +2,7 @@ package data;
 
 
 import com.github.javafaker.Faker;
+import tests.api.models.ContactRequestModel;
 import tests.api.models.RegistrationRequestModel;
 
 import java.util.Locale;
@@ -37,7 +38,7 @@ public class TestDataGenerator {
         String lastName = generateEnglishLastName();
         String username = generateUsername(firstName, lastName);
         String password = faker.internet().password(8, 12);
-        String invalidPassword = faker.internet().password(12,15);
+        String invalidPassword = faker.internet().password(12, 15);
 
         return RegistrationRequestModel.builder()
                 .firstName(firstName)
@@ -54,9 +55,18 @@ public class TestDataGenerator {
                 .build();
     }
 
+    public static ContactRequestModel fillCustomerCareForm() {
+
+        return ContactRequestModel.builder()
+                .name(generateEnglishFullName())
+                .email(generateValidEmail())
+                .phone(generatePhoneNumber())
+                .message(generateCustomerCareMessage())
+                .build();
+    }
 
 
-    private static String generateEnglishFirstName() {
+    public static String generateEnglishFirstName() {
         String[] englishNames = {"Antony", "George", "Dave", "Dominic", "Andrew", "Alex",
                 "Max", "Neil", "Michael", "Steven", "Edgar", "Matthew"};
 
@@ -69,7 +79,7 @@ public class TestDataGenerator {
         return firstName;
     }
 
-    private static String generateEnglishLastName() {
+    public static String generateEnglishLastName() {
         String[] englishLastNames = {"Smith", "Foster", "Boyle", "Grant", "Grace", "Murphy",
                 "Adams", "Gallagher", "White", "Clark", "Chase", "Fisher"};
 
@@ -80,6 +90,25 @@ public class TestDataGenerator {
         }
 
         return lastName;
+    }
+
+    public static String generateEnglishFullName() {
+
+        String[] englishNames = {"Antony", "George", "Dave", "Dominic", "Andrew", "Alex",
+                "Max", "Neil", "Michael", "Steven", "Edgar", "Matthew"};
+
+        String[] englishLastNames = {"Smith", "Foster", "Boyle", "Grant", "Grace", "Murphy",
+                "Adams", "Gallagher", "White", "Clark", "Chase", "Fisher"};
+
+        String firstName = englishNames[(new Random()).nextInt(englishNames.length)];
+        String lastName = englishLastNames[(new Random()).nextInt(englishLastNames.length)];
+        String fullName = firstName + lastName;
+
+        if (fullName.length() > 33) {
+            fullName = fullName.substring(0, 33);
+        }
+
+        return fullName;
     }
 
     public static String generateValidEmail() {
@@ -132,8 +161,32 @@ public class TestDataGenerator {
                 .toLowerCase();
     }
 
+    public static String generateCustomerCareMessage() {
+        Faker faker = new Faker();
+        String[] intros = {
+                "Hello,",
+                "Hi there,",
+                "Good afternoon,",
+                "Dear support team,"
+        };
+        String[] issues = {
+                "I noticed an issue with my recent transaction.",
+                "I’m unable to reset my password.",
+                "My account balance doesn’t seem correct.",
+                "I’m having trouble accessing my dashboard."
+        };
+        String[] closings = {
+                "Could you please help me with this?",
+                "Please let me know what I should do next.",
+                "Thanks for your assistance.",
+                "Looking forward to your reply."
+        };
+
+        return String.format("%s %s %s",
+                intros[faker.number().numberBetween(0, intros.length)],
+                issues[faker.number().numberBetween(0, issues.length)],
+                closings[faker.number().numberBetween(0, closings.length)]);
 
 
-
-
+    }
 }

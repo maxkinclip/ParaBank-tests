@@ -1,6 +1,6 @@
 package tests.api.dto;
 
-public class UserDTO {
+public class RegistrationDTO {
     private String firstName;
     private String lastName;
     private String address;
@@ -16,8 +16,8 @@ public class UserDTO {
     private String passwordValidation;
 
 
-    public UserDTO(String firstName, String lastName, String address,
-                                      String city, String state, String zipCode, String phoneNumber, String ssn, String userName, String password, String passwordValidation) {
+    public RegistrationDTO(String firstName, String lastName, String address,
+                               String city, String state, String zipCode, String phoneNumber, String ssn, String userName, String password, String passwordValidation) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
@@ -30,7 +30,6 @@ public class UserDTO {
         this.password = password;
         this.passwordValidation = passwordValidation;
     }
-
 
     public String getFirstName() { return firstName; }
     public void setFirstName(String firstName) { this.firstName = firstName; }
@@ -67,4 +66,5 @@ public class UserDTO {
     public String getPasswordValidation() { return passwordValidation; }
     public void setPasswordValidation(String passwordValidation) { this.passwordValidation = passwordValidation; }
 }
+
 

@@ -2,43 +2,34 @@ package pages;
 
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
+import com.codeborne.selenide.WebDriverRunner;
 import io.qameta.allure.Step;
 
 import static com.codeborne.selenide.Selectors.byText;
+import static com.codeborne.selenide.Selenide.$;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class MainPage {
+public class MainPage extends BasePage {
 
-    public SelenideElement usernameField() {
-        return Selenide.$("username");
+    @Override
+    protected String getPageUrl() {
+        return "/parabank/index.htm";
     }
 
-    public SelenideElement passwordField() {
-        return Selenide.$("password");
+    @Step("Open Main Page")
+    public MainPage openMainPage() {
+        openPage();
+        return this;
     }
-
-    public SelenideElement loginButton() {
-        return Selenide.$("Log In");
-    }
-
-    public SelenideElement forgotLoginLink() {
-        return Selenide.$(byText("Forgot login info?"));
-    }
-
-    public SelenideElement registerLink() {
-        return Selenide.$(byText ("Register"));
-    }
-
-    public SelenideElement contactButton() {
-        return Selenide.$(".contact");
-    }
-
-
-
 
     @Step("Fill username field with '{username}'")
     public MainPage fillUsername(String username) {
         usernameField().sendKeys(username);
         return this;
+    }
+
+    public SelenideElement usernameField() {
+        return $("[name='username']");
     }
 
     @Step("Fill password field with '{password}'")
@@ -47,11 +38,59 @@ public class MainPage {
         return this;
     }
 
+    public SelenideElement passwordField() {
+        return $("[name='password']");
+    }
+
     @Step("Click login button")
     public MainPage clickLoginButton() {
         loginButton().click();
         return this;
     }
+
+    public SelenideElement loginButton() {
+        return $("[value='Log In']");
+    }
+
+    @Step("Login verification")
+    public MainPage loginVerification() {
+        String expectedUrl = "https://parabank.parasoft.com/parabank/overview.htm";
+        String actualUrl = WebDriverRunner.url().split(";")[0];
+        assertEquals(expectedUrl, actualUrl,
+                "User should be on the overview page after login");
+        return this;
+    }
+
+    @Step("Login error")
+    public MainPage verifyLoginError() {
+        String expectedUrl = "https://parabank.parasoft.com/parabank/login.htm";
+        String actualUrl = WebDriverRunner.url().split(";")[0];
+        assertEquals(expectedUrl, actualUrl,
+                "User should be on the login page after failed main page login");
+        return this;
+    }
+
+    @Step("Fill Login Form")
+    public MainPage fillLoginForm(String userName, String password) {
+        return fillUsername(userName)
+                .fillPassword(password)
+                .clickLoginButton();
+
+    }
+
+    public SelenideElement forgotLoginLink() {
+        return $(byText("Forgot login info?"));
+    }
+
+    public SelenideElement registerLink() {
+        return $(byText ("Register"));
+    }
+
+    public SelenideElement contactButton() {
+        return $(".contact");
+    }
+
+
 
     @Step("Click forgot login link")
     public MainPage clickForgotLoginLink() {
@@ -70,6 +109,9 @@ public class MainPage {
         contactButton().click();
         return this;
     }
+
+
+
 
 
 

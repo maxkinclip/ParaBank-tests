@@ -11,6 +11,8 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ContactRequestModel {
 
-    private String userName;
-    private String password;
+    private String name;
+    private String email;
+    private String phone;
+    private String message;
 }
