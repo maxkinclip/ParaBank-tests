@@ -4,7 +4,7 @@ import data.TestDataGenerator;
 import org.junit.jupiter.api.Test;
 import pages.ContactPage;
 import tests.BaseTest;
-import tests.api.models.ContactRequestModel;
+import tests.api.models.request.ContactRequestModel;
 
 public class ContactCustomerCareTests extends BaseTest {
     ContactPage ParaBankCustomerCare = new ContactPage();

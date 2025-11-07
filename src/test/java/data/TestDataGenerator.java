@@ -2,8 +2,9 @@ package data;
 
 
 import com.github.javafaker.Faker;
-import tests.api.models.ContactRequestModel;
-import tests.api.models.RegistrationRequestModel;
+import tests.api.models.request.ContactRequestModel;
+import tests.api.models.request.RegistrationRequestModel;
+import tests.api.models.request.TransferRequestModel;
 
 import java.util.Locale;
 import java.util.Random;
@@ -94,7 +95,7 @@ public class TestDataGenerator {
 
     public static String generateEnglishFullName() {
 
-        String[] englishNames = {"Antony", "George", "Dave", "Dominic", "Andrew", "Alex",
+        String[] englishNames = {"Anthony", "George", "Dave", "Dominic", "Andrew", "Alex",
                 "Max", "Neil", "Michael", "Steven", "Edgar", "Matthew"};
 
         String[] englishLastNames = {"Smith", "Foster", "Boyle", "Grant", "Grace", "Murphy",
@@ -188,5 +189,19 @@ public class TestDataGenerator {
                 closings[faker.number().numberBetween(0, closings.length)]);
 
 
+    }
+
+    public static TransferRequestModel generateTransfer(int from, int to) {
+        return TransferRequestModel.builder()
+                .fromAccountId(from)
+                .toAccountId(to)
+                .amount(faker.number().randomDouble(2, 1, 500))
+                .build();
+    }
+
+    public static int randomAccountId() {
+
+        int[] accountIds = {13344, 13345, 13346};
+        return accountIds[new Random().nextInt(accountIds.length)];
     }
 }

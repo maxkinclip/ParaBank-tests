@@ -4,7 +4,7 @@ import data.TestDataGenerator;
 import org.junit.jupiter.api.Test;
 import pages.RegistrationPage;
 import tests.BaseTest;
-import tests.api.models.RegistrationRequestModel;
+import tests.api.models.request.RegistrationRequestModel;
 
 public class RegistrationTests extends BaseTest {
     RegistrationPage ParaBankRegistration = new RegistrationPage();
