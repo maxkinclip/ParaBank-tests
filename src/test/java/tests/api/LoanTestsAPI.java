@@ -4,6 +4,8 @@ import io.qameta.allure.Description;
 import io.restassured.path.xml.XmlPath;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import tests.api.clients.AccountClient;
 import tests.api.clients.CustomerClient;
 import tests.api.clients.LoanClient;
@@ -98,4 +100,80 @@ public class LoanTestsAPI {
         String single = xml.getString("list.account.id");
         return single == null ? "" : single.replaceAll("\\D", "");
     }
+
+    private List<Long> getAccountIds(long customerId) {
+        Response accountsRes = accountClient.getAccounts(customerId);
+        assertThat(accountsRes.statusCode()).isEqualTo(200);
+
+        XmlPath xml = new XmlPath(accountsRes.asString());
+
+        // Сначала пробуем как список
+        List<String> raw = xml.getList("list.account.id");
+        List<Long> ids = new ArrayList<>();
+        if (raw != null && !raw.isEmpty()) {
+            for (String s : raw) {
+                if (s != null) {
+                    s = s.replaceAll("\\D", ""); // только цифры в каждом элементе
+                    if (!s.isBlank()) {
+                        try { ids.add(Long.parseLong(s)); } catch (Exception ignored) {}
+                    }
+                }
+            }
+        }
+
+        // Если сервис вернул один элемент скаляром
+        if (ids.isEmpty()) {
+            String single = xml.getString("list.account.id");
+            if (single != null) {
+                String onlyDigits = single.replaceAll("\\D", "");
+                if (!onlyDigits.isBlank()) {
+                    try { ids.add(Long.parseLong(onlyDigits)); } catch (Exception ignored) {}
+                }
+            }
+        }
+
+        System.out.println("Discovered account IDs: " + ids);
+        return ids;
+    }
+
+
+    @ParameterizedTest(name = "Loan decision for amount={0}, downPayment={1}")
+    @CsvSource({
+            "1000, 50",
+            "5000, 100",
+            "9999999, 10"
+    })
+    void loanDecisionParameterized(double amount, double down) {
+        // login
+        Response loginRes = customerClient.login("john", "demo");
+        assertThat(loginRes.statusCode()).isEqualTo(200);
+        CustomerModel customer = XmlUtils.fromXml(loginRes, CustomerModel.class);
+
+        // find a valid fromAccountId
+        List<Long> ids = getAccountIds(customer.getId());
+        assertThat(ids).isNotEmpty();
+        long fromAccountId = ids.get(0);
+
+        // request
+        LoanRequestModel req = LoanRequestModel.builder()
+                .customerId(customer.getId())
+                .amount(amount)
+                .downPayment(down)
+                .fromAccountId(String.valueOf(fromAccountId))
+                .build();
+
+        Response loanRes = loanClient.requestLoan(req);
+
+        int code = loanRes.statusCode();
+        String body = loanRes.asString();
+        System.out.println("Loan request → code: " + code + "\nbody:\n" + body);
+
+        // У ParaBank бывают редкие 404 на "битых" id; с нашим парсером этого не должно быть,
+        // поэтому утверждаем 200
+        assertThat(code).isEqualTo(200);
+
+        LoanResponseModel loan = XmlUtils.fromXml(loanRes, LoanResponseModel.class);
+        assertThat(loan.getApproved()).isNotNull();
+    }
+
 }
