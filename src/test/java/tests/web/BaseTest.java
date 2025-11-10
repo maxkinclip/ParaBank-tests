@@ -44,7 +44,7 @@ public class BaseTest {
     }
 
     @AfterAll
-    void tearDown() {
+    static void tearDown() {
         closeWebDriver();
     }
 }
