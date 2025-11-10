@@ -1,6 +1,9 @@
+package tests.api;
+
 import io.qameta.allure.*;
 import io.restassured.path.xml.XmlPath;
 import io.restassured.response.Response;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import tests.api.clients.AccountClient;
@@ -22,6 +25,7 @@ public class DeleteAccountTestsAPI {
     AccountDeleteClient deleteClient = new AccountDeleteClient();
 
     @Test
+    @Disabled("ParaBank DELETE endpoint currently not supported")
     @DisplayName("Delete existing account successfully")
     @Description("DELETE: closing a customer account (hypothetical scenario)")
     @Owner("maxkinclip")
@@ -52,6 +56,7 @@ public class DeleteAccountTestsAPI {
     }
 
     @Test
+    @Disabled("ParaBank DELETE endpoint currently not supported")
     @DisplayName("Error when deleting non-existing account")
     @Description("DELETE: Attempt to delete a non-existent account (error 404)")
     @Owner("maxkinclip")

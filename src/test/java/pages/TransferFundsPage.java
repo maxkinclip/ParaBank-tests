@@ -3,6 +3,8 @@ package pages;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 
+import static com.codeborne.selenide.Condition.appear;
+import static com.codeborne.selenide.Condition.enabled;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selectors.withText;
 import static com.codeborne.selenide.Selenide.$;
@@ -18,6 +20,10 @@ public class TransferFundsPage extends BasePage {
     public TransferFundsPage openTransferPage() {
         openPage();
         return this.openTransferPage();
+    }
+
+    private SelenideElement rightPanelTitle() {
+        return $("#rightPanel .title");
     }
 
     @Step("Type in the amount in the field")
@@ -52,7 +58,7 @@ public class TransferFundsPage extends BasePage {
 
     @Step("Click transfer button")
     public TransferFundsPage clickTransferButton() {
-        transferButton().click();
+        transferButton().should(appear, enabled).click();
         return this;
     }
 

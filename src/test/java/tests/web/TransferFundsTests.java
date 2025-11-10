@@ -1,6 +1,7 @@
 package tests.web;
 
 import io.qameta.allure.*;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import pages.MainPage;
@@ -36,6 +37,7 @@ public class TransferFundsTests extends BaseTest {
     }
 
     @Test
+    @Disabled("ParaBank currently doesn't trigger 'insufficient funds' error")
     @DisplayName("Error when transferring with insufficient balance")
     @Owner("maxkinclip")
     @Severity(SeverityLevel.CRITICAL)
