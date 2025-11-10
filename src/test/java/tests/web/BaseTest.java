@@ -20,6 +20,6 @@ public class BaseTest {
 
     @AfterAll
     static void tearDown() {
-        //closeWebDriver();
+        closeWebDriver();
     }
 }

@@ -6,7 +6,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import lombok.Data;
 
 @Data
-@JsonIgnoreProperties(ignoreUnknown = true) // tolerate extra fields like responseDate
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class LoanResponseModel {
     @JacksonXmlProperty(localName = "approved")
     private Boolean approved;

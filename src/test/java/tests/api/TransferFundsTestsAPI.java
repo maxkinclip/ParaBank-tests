@@ -25,20 +25,20 @@ public class TransferFundsTestsAPI {
     @Test
     @Description("Verify funds can be transferred between two valid accounts (discovered at runtime)")
     public void successfulTransfer() {
-        // 1) Login and get customer id
+
         Response loginRes = customerClient.login("john", "demo");
         assertThat(loginRes.statusCode()).isEqualTo(200);
         CustomerModel customer = XmlUtils.fromXml(loginRes, CustomerModel.class);
 
-        // 2) Ensure we have at least two accounts; if not, create one
+
         List<String> accountIds = getAccountIds(customer.getId());
         if (accountIds.size() < 2) {
-            // Create an extra account using the first as the funding source
+
             String sourceId = accountIds.get(0);
             Response createRes = accountClient.openNewAccount(customer.getId(), 0, sourceId);
             System.out.println("Create account response: " + createRes.statusCode() + "\n" + createRes.asString());
 
-            // Re-fetch list
+
             accountIds = getAccountIds(customer.getId());
         }
         assertThat(accountIds.size()).isGreaterThanOrEqualTo(2);
@@ -46,14 +46,14 @@ public class TransferFundsTestsAPI {
         String fromId = accountIds.get(0);
         String toId   = accountIds.get(1);
 
-        // 3) Get from-account balance and pick a safe amount
+
         double fromBalance = getAccountBalance(fromId);
-        double amount = Math.max(1.00, Math.min(25.00, fromBalance / 4.0)); // ≥ 1.00, ≤ 25.00, ≤ 1/4 of balance
+        double amount = Math.max(1.00, Math.min(25.00, fromBalance / 4.0));
 
         System.out.printf("Transferring %.2f from %s to %s (from balance = %.2f)%n",
                 amount, fromId, toId, fromBalance);
 
-        // 4) Call transfer endpoint (String IDs)
+
         Response transferRes = transferClient.transferFunds(fromId, toId, amount);
 
         int code = transferRes.statusCode();
@@ -61,7 +61,7 @@ public class TransferFundsTestsAPI {
         System.out.println("Transfer response code: " + code);
         System.out.println("Transfer response body:\n" + body);
 
-        // 5) Handle realistic outcomes
+
         if (code == 400 && body != null && body.contains("Insufficient funds")) {
             System.out.println("⚠️ Transfer refused: Insufficient funds. Test skipped as acceptable demo behavior.");
         } else if (code == 400 && body != null && body.toLowerCase().contains("could not find account")) {
@@ -69,13 +69,13 @@ public class TransferFundsTestsAPI {
                     " (the demo environment may have rotated account IDs).");
         } else {
             assertThat(code).isEqualTo(200);
-            // Some deployments return minimal body; avoid brittle assertions here.
+
         }
     }
 
-    // --------- helpers ---------
+    // ---- helpers ----
 
-    // Always return String IDs; handle single vs multi-node XML safely.
+
     private List<String> getAccountIds(long customerId) {
         Response accountsRes = accountClient.getAccounts(customerId);
         assertThat(accountsRes.statusCode()).isEqualTo(200);

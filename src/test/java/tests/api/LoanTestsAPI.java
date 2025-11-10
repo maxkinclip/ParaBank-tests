@@ -25,21 +25,23 @@ public class LoanTestsAPI {
     AccountClient  accountClient  = new AccountClient();
     LoanClient     loanClient     = new LoanClient();
 
+
     @Test
     @Description("Loan approval with dynamic customer/account IDs")
     public void loanApproved() {
-        // 1) Login -> customerId
+
+
         Response loginRes = customerClient.login("john", "demo");
         assertThat(loginRes.statusCode()).isEqualTo(200);
         CustomerModel customer = XmlUtils.fromXml(loginRes, CustomerModel.class);
 
-        // 2) Get accounts -> pick first as funding account (STRING id)
+
         Response accountsRes = accountClient.getAccounts(customer.getId());
         assertThat(accountsRes.statusCode()).isEqualTo(200);
         String fromAccountId = firstAccountId(accountsRes);
         assertThat(fromAccountId).isNotBlank();
 
-        // 3) Build request (use sensible small numbers for demo env)
+
         LoanRequestModel req = LoanRequestModel.builder()
                 .customerId(customer.getId())
                 .amount(1000)
@@ -47,17 +49,16 @@ public class LoanTestsAPI {
                 .fromAccountId(fromAccountId)
                 .build();
 
-        // 4) Call API
+
         Response loanRes = loanClient.requestLoan(req);
         System.out.println("Loan response code: " + loanRes.statusCode());
         System.out.println("Loan response body:\n" + loanRes.asString());
 
-        // 5) Assert parse + outcome (approval may vary in demo; assert 200 and approved != null)
+
         assertThat(loanRes.statusCode()).isEqualTo(200);
         LoanResponseModel loan = XmlUtils.fromXml(loanRes, LoanResponseModel.class);
         assertThat(loan.getApproved()).isNotNull();
-        // If you want to require approval here, keep this:
-        // assertThat(loan.getApproved()).isTrue();
+
     }
 
     @Test
@@ -72,7 +73,7 @@ public class LoanTestsAPI {
         String fromAccountId = firstAccountId(accountsRes);
         assertThat(fromAccountId).isNotBlank();
 
-        // deliberately too large -> likely decline
+
         LoanRequestModel req = LoanRequestModel.builder()
                 .customerId(customer.getId())
                 .amount(9_999_999)
@@ -86,7 +87,7 @@ public class LoanTestsAPI {
 
         assertThat(loanRes.statusCode()).isEqualTo(200);
         LoanResponseModel loan = XmlUtils.fromXml(loanRes, LoanResponseModel.class);
-        assertThat(loan.getApproved()).isFalse(); // negative path
+        assertThat(loan.getApproved()).isFalse();
     }
 
     // ---- helpers ----
@@ -107,7 +108,7 @@ public class LoanTestsAPI {
 
         XmlPath xml = new XmlPath(accountsRes.asString());
 
-        // Сначала пробуем как список
+
         List<String> raw = xml.getList("list.account.id");
         List<Long> ids = new ArrayList<>();
         if (raw != null && !raw.isEmpty()) {
@@ -121,7 +122,7 @@ public class LoanTestsAPI {
             }
         }
 
-        // Если сервис вернул один элемент скаляром
+
         if (ids.isEmpty()) {
             String single = xml.getString("list.account.id");
             if (single != null) {
@@ -144,17 +145,17 @@ public class LoanTestsAPI {
             "9999999, 10"
     })
     void loanDecisionParameterized(double amount, double down) {
-        // login
+
         Response loginRes = customerClient.login("john", "demo");
         assertThat(loginRes.statusCode()).isEqualTo(200);
         CustomerModel customer = XmlUtils.fromXml(loginRes, CustomerModel.class);
 
-        // find a valid fromAccountId
+
         List<Long> ids = getAccountIds(customer.getId());
         assertThat(ids).isNotEmpty();
         long fromAccountId = ids.get(0);
 
-        // request
+
         LoanRequestModel req = LoanRequestModel.builder()
                 .customerId(customer.getId())
                 .amount(amount)
@@ -168,8 +169,7 @@ public class LoanTestsAPI {
         String body = loanRes.asString();
         System.out.println("Loan request → code: " + code + "\nbody:\n" + body);
 
-        // У ParaBank бывают редкие 404 на "битых" id; с нашим парсером этого не должно быть,
-        // поэтому утверждаем 200
+
         assertThat(code).isEqualTo(200);
 
         LoanResponseModel loan = XmlUtils.fromXml(loanRes, LoanResponseModel.class);

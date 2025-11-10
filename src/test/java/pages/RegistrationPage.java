@@ -4,11 +4,10 @@ import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 
-import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selectors.byId;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.open;
 
 public class RegistrationPage extends BasePage {
 
@@ -25,12 +24,15 @@ public class RegistrationPage extends BasePage {
 
     @Step("Fill first name field with '{firstName}'")
     public RegistrationPage fillFirstName(String firstName) {
-        CustomerFirstNameField().sendKeys(firstName);
+        customerFirstNameField().sendKeys(firstName);
         return this;
     }
 
-    public SelenideElement CustomerFirstNameField() {
-        return Selenide.$("form[action*='register']").$(byId("customer.firstName")).shouldBe(visible);
+    public SelenideElement customerFirstNameField() {
+        return $(byId("customer.firstName"))
+                .shouldBe(visible,enabled)
+                .shouldHave(attribute("name", "customer.firstName"))
+                .shouldBe(visible,enabled);
     }
 
     @Step("Fill last name field with '{lastName}'")
@@ -170,8 +172,6 @@ public class RegistrationPage extends BasePage {
         $("form[action*='register']").$(byId("repeatedPassword.errors")).click();
         return this;
     }
-
-
 
 }
 

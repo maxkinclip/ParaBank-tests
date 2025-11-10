@@ -65,11 +65,11 @@ public class OpenAccountTestsAPI {
     @Test
     @Description("Verify that a user can open a new savings account via REST API")
     public void openSavingsAccount() {
-        // Step 1. Login as demo user
+
         Response loginResponse = customerClient.login("john", "demo");
         CustomerModel customer = XmlUtils.fromXml(loginResponse, CustomerModel.class);
 
-        // Step 2. Get user's first valid account
+
         Response accountsResponse = accountClient.getAccounts(customer.getId());
         List<String> accountIds = extractAccountIds(accountsResponse);
         assertThat(accountIds).isNotEmpty();
@@ -88,7 +88,7 @@ public class OpenAccountTestsAPI {
         System.out.println("Response code: " + statusCode);
         System.out.println("Response body:\n" + body);
 
-        // Step 4. Handle real API behavior
+
         if (statusCode == 400 && body.contains("Could not create new account")) {
             System.out.println("⚠️ ParaBank refused Savings account creation (likely demo limit reached). Test skipped.");
         } else {
@@ -98,14 +98,14 @@ public class OpenAccountTestsAPI {
         }
     }
 
-    // -------- Helper methods --------
+    // ---- helpers ----
     private List<String> extractAccountIds(Response resp) {
         XmlPath xml = new XmlPath(resp.asString());
 
-        // Try to read a list of ids first
+
         List<String> ids = xml.getList("list.account.id");
         if (ids == null || ids.isEmpty()) {
-            // Single result case returns a scalar, not a list
+
             String single = xml.getString("list.account.id");
             if (single != null && !single.isBlank()) {
                 ids = List.of(single.trim());
@@ -114,7 +114,7 @@ public class OpenAccountTestsAPI {
             }
         }
 
-        // Normalize: keep only digits and drop empties
+
         return ids.stream()
                 .map(s -> s == null ? "" : s.replaceAll("\\D", ""))
                 .filter(s -> !s.isBlank())

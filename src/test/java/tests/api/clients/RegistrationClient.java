@@ -10,9 +10,7 @@ public class RegistrationClient {
     private static final String BASE = "https://parabank.parasoft.com/parabank";
     private static final String REGISTER_PAGE = BASE + "/register.htm";
 
-    /**
-     * GETs the registration page to obtain a valid JSESSIONID.
-     */
+
     private String getSessionCookie() {
         Response open = RestAssured
                 .given()
@@ -22,9 +20,7 @@ public class RegistrationClient {
         return open.getCookie("JSESSIONID");
     }
 
-    /**
-     * POSTs the registration form using URL-encoded fields + the same JSESSIONID.
-     */
+
     public Response registerUser(RegistrationRequestModel user) {
         String jsessionId = getSessionCookie();
 

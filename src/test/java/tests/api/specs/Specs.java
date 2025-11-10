@@ -16,10 +16,9 @@ public class Specs {
                 .setResponseTemplate(respTpl);
     }
 
-    // Банк (XML)
     public static RequestSpecification bankRequestSpec(String baseUri) {
         return new RequestSpecBuilder()
-                .setBaseUri(baseUri) // https://parabank.parasoft.com/parabank/services/bank
+                .setBaseUri(baseUri)
                 .addFilter(new AllureRestAssured()
                         .setRequestTemplate("request.ftl")
                         .setResponseTemplate("response.ftl"))
@@ -27,10 +26,10 @@ public class Specs {
                 .build();
     }
 
-    // JSON-сервисы (для DELETE-примера)
+
     public static RequestSpecification jsonRequestSpec(String baseUri) {
         return new RequestSpecBuilder()
-                .setBaseUri(baseUri) // например https://reqres.in/api
+                .setBaseUri(baseUri)
                 .addFilter(new AllureRestAssured()
                         .setRequestTemplate("request.ftl")
                         .setResponseTemplate("response.ftl"))
@@ -38,7 +37,7 @@ public class Specs {
                 .build();
     }
 
-    // Базовые response-спеки
+
     public static ResponseSpecification ok200() {
         return new ResponseSpecBuilder()
                 .expectStatusCode(200)

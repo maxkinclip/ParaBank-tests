@@ -1,5 +1,12 @@
 plugins {
     id 'java'
+    id "io.qameta.allure" version "2.9.6"
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
 }
 
 group = 'com.maxkinclip'
@@ -13,8 +20,9 @@ dependencies {
     implementation "com.codeborne:selenide:7.9.0"
     implementation "org.slf4j:slf4j-simple:2.0.7"
     implementation "com.github.javafaker:javafaker:1.0.2"
+    implementation "org.aspectj:aspectjweaver:1.9.22"
 
-    // Allure (все одной версии!)
+    // Allure
     testImplementation "io.qameta.allure:allure-junit5:2.29.1"
     testImplementation "io.qameta.allure:allure-rest-assured:2.29.1"
     testImplementation "io.qameta.allure:allure-selenide:2.29.1"
@@ -36,7 +44,7 @@ dependencies {
     testCompileOnly "org.projectlombok:lombok:1.18.38"
     testAnnotationProcessor "org.projectlombok:lombok:1.18.38"
 
-    // Freemarker (обычно притягивается транзитивно, но оставим явно)
+    // Freemarker
     testImplementation "org.freemarker:freemarker:2.3.32"
 
     // JUnit
@@ -52,6 +60,20 @@ sourceSets {
     test {
         resources {
             srcDirs = ["src/test/resources"]
+        }
+    }
+}
+
+allure {
+    report {
+        version.set("2.17.3") //версия Allure Report (https://github.com/allure-framework/allure2)
+    }
+    adapter {
+        aspectjWeaver.set(true) // обработка аннотации @Step
+        frameworks {
+            junit5 {
+                adapterVersion.set("2.17.3") //версия Allure JUnit5 (https://github.com/allure-framework/allure-java)
+            }
         }
     }
 }
