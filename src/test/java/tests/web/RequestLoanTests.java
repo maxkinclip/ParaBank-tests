@@ -1,5 +1,7 @@
 package tests.web;
 
+import io.qameta.allure.*;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import pages.MainPage;
 import pages.RequestLoanPage;
@@ -7,6 +9,9 @@ import tests.BaseTest;
 
 import static com.codeborne.selenide.Selenide.open;
 
+@Epic("ParaBank UI")
+@Feature("Loan Requests")
+@Story("Requesting loans via UI")
 public class RequestLoanTests extends BaseTest {
 
     MainPage ParaBankLogin = new MainPage();
@@ -14,6 +19,9 @@ public class RequestLoanTests extends BaseTest {
     RequestLoanPage ParaBankLoanRequest = new RequestLoanPage();
 
     @Test
+    @DisplayName("Request loan successfully with valid data")
+    @Owner("maxkinclip")
+    @Severity(SeverityLevel.CRITICAL)
     public void loanApproved() {
         ParaBankLogin.openMainPage()
                 .fillLoginForm("john","demo")
@@ -28,6 +36,9 @@ public class RequestLoanTests extends BaseTest {
     }
 
     @Test
+    @DisplayName("Loan request denied because of insufficient funds ")
+    @Owner("maxkinclip")
+    @Severity(SeverityLevel.NORMAL)
     public void loanDeniedInsufficientFunds() {
         ParaBankLogin.openMainPage()
                 .fillLoginForm("john","demo")

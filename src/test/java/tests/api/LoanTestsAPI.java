@@ -1,8 +1,9 @@
 package tests.api;
 
-import io.qameta.allure.Description;
+import io.qameta.allure.*;
 import io.restassured.path.xml.XmlPath;
 import io.restassured.response.Response;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -19,6 +20,9 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Epic("ParaBank API")
+@Feature("Loan Requests")
+@Story("Customer requests a loan")
 public class LoanTestsAPI {
 
     CustomerClient customerClient = new CustomerClient();
@@ -27,7 +31,10 @@ public class LoanTestsAPI {
 
 
     @Test
+    @DisplayName("Approve loan for valid customer and amount")
     @Description("Loan approval with dynamic customer/account IDs")
+    @Owner("maxkinclip")
+    @Severity(SeverityLevel.CRITICAL)
     public void loanApproved() {
 
 
@@ -62,7 +69,10 @@ public class LoanTestsAPI {
     }
 
     @Test
+    @DisplayName("Reject loan for invalid customer ID")
     @Description("Loan declined with large amount (negative scenario)")
+    @Owner("maxkinclip")
+    @Severity(SeverityLevel.NORMAL)
     public void loanDeclined() {
         Response loginRes = customerClient.login("john", "demo");
         assertThat(loginRes.statusCode()).isEqualTo(200);
@@ -114,7 +124,7 @@ public class LoanTestsAPI {
         if (raw != null && !raw.isEmpty()) {
             for (String s : raw) {
                 if (s != null) {
-                    s = s.replaceAll("\\D", ""); // только цифры в каждом элементе
+                    s = s.replaceAll("\\D", "");
                     if (!s.isBlank()) {
                         try { ids.add(Long.parseLong(s)); } catch (Exception ignored) {}
                     }

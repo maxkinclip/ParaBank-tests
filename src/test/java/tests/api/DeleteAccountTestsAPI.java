@@ -1,6 +1,7 @@
-import io.qameta.allure.Description;
+import io.qameta.allure.*;
 import io.restassured.path.xml.XmlPath;
 import io.restassured.response.Response;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import tests.api.clients.AccountClient;
 import tests.api.clients.AccountDeleteClient;
@@ -11,6 +12,9 @@ import tests.api.utils.XmlUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Epic("ParaBank API")
+@Feature("Account Management")
+@Story("Deleting customer accounts via API")
 public class DeleteAccountTestsAPI {
 
     CustomerClient customerClient = new CustomerClient();
@@ -18,7 +22,10 @@ public class DeleteAccountTestsAPI {
     AccountDeleteClient deleteClient = new AccountDeleteClient();
 
     @Test
+    @DisplayName("Delete existing account successfully")
     @Description("DELETE: closing a customer account (hypothetical scenario)")
+    @Owner("maxkinclip")
+    @Severity(SeverityLevel.CRITICAL)
     public void deleteAccountSuccess() {
         // Arrange
         Response loginRes = customerClient.login("john", "demo");
@@ -45,7 +52,10 @@ public class DeleteAccountTestsAPI {
     }
 
     @Test
+    @DisplayName("Error when deleting non-existing account")
     @Description("DELETE: Attempt to delete a non-existent account (error 404)")
+    @Owner("maxkinclip")
+    @Severity(SeverityLevel.NORMAL)
     public void deleteAccountNotFound() {
         Response deleteRes = deleteClient.deleteAccount("999999");
         assertThat(deleteRes.statusCode()).isEqualTo(404);

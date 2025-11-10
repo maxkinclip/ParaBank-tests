@@ -1,9 +1,10 @@
 package tests.api;
 
 
-import io.qameta.allure.Description;
+import io.qameta.allure.*;
 import io.restassured.path.xml.XmlPath;
 import io.restassured.response.Response;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import tests.api.clients.AccountClient;
 import tests.api.clients.CustomerClient;
@@ -14,13 +15,18 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Epic("ParaBank API")
+@Feature("Account Management")
+@Story("Opening new accounts via API")
 public class OpenAccountTestsAPI {
 
     CustomerClient customerClient = new CustomerClient();
     AccountClient accountClient = new AccountClient();
 
     @Test
-    @Description("Verify login API works before proceeding")
+    @DisplayName("Verify login API works before proceeding")
+    @Owner("maxkinclip")
+    @Severity(SeverityLevel.CRITICAL)
     public void loginSanityCheck() {
         Response loginResponse = customerClient.login("john", "demo");
         System.out.println("Login response status: " + loginResponse.statusCode());
@@ -31,7 +37,10 @@ public class OpenAccountTestsAPI {
     }
 
     @Test
+    @DisplayName("Open new checking account successfully")
     @Description("Verify that a user can open a new checking account via REST API")
+    @Owner("maxkinclip")
+    @Severity(SeverityLevel.CRITICAL)
     public void openCheckingAccount() {
         Response loginResponse = customerClient.login("john", "demo");
         CustomerModel customer = XmlUtils.fromXml(loginResponse, CustomerModel.class);
@@ -63,7 +72,10 @@ public class OpenAccountTestsAPI {
     }
 
     @Test
+    @DisplayName("Open new savings account successfully")
     @Description("Verify that a user can open a new savings account via REST API")
+    @Owner("maxkinclip")
+    @Severity(SeverityLevel.CRITICAL)
     public void openSavingsAccount() {
 
         Response loginResponse = customerClient.login("john", "demo");

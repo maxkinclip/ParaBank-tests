@@ -1,8 +1,9 @@
 package tests.api;
 
-import io.qameta.allure.Description;
+import io.qameta.allure.*;
 import io.restassured.path.xml.XmlPath;
 import io.restassured.response.Response;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import tests.api.clients.AccountClient;
 import tests.api.clients.CustomerClient;
@@ -16,6 +17,9 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Epic("ParaBank API")
+@Feature("Fund Transfers")
+@Story("Transferring money between accounts via API")
 public class TransferFundsTestsAPI {
 
     CustomerClient customerClient = new CustomerClient();
@@ -23,7 +27,10 @@ public class TransferFundsTestsAPI {
     TransferClient transferClient = new TransferClient();
 
     @Test
+    @DisplayName("Transfer funds successfully via API")
     @Description("Verify funds can be transferred between two valid accounts (discovered at runtime)")
+    @Owner("maxkinclip")
+    @Severity(SeverityLevel.CRITICAL)
     public void successfulTransfer() {
 
         Response loginRes = customerClient.login("john", "demo");
