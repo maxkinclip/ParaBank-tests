@@ -36,6 +36,7 @@ public class TransferFundsTests extends BaseTest {
                 .receiveSuccessfulTransferMessage();
     }
 
+    @Issue("PARA-405")
     @Test
     @Disabled("ParaBank currently doesn't trigger 'insufficient funds' error")
     @DisplayName("Error when transferring with insufficient balance")

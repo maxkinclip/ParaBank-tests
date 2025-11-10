@@ -24,6 +24,7 @@ public class DeleteAccountTestsAPI {
     AccountClient  accountClient  = new AccountClient();
     AccountDeleteClient deleteClient = new AccountDeleteClient();
 
+    @Issue("PARA-405")
     @Test
     @Disabled("ParaBank DELETE endpoint currently not supported")
     @DisplayName("Delete existing account successfully")
@@ -54,7 +55,7 @@ public class DeleteAccountTestsAPI {
         assertThat(result.getSuccess()).isTrue();
         assertThat(result.getClosedAccountId()).isEqualTo(accountId);
     }
-
+    @Issue("PARA-405")
     @Test
     @Disabled("ParaBank DELETE endpoint currently not supported")
     @DisplayName("Error when deleting non-existing account")

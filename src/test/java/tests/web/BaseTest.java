@@ -169,4 +169,11 @@ public class BaseTest {
         $("#rightPanel .title").should(appear).shouldHave(text(expectedRightPanelTitle));
     }
 
+    @AfterEach
+    void addAllureAttachments() {
+        Attachments.screenshot("Final screenshot");
+        Attachments.pageSource();
+        Attachments.browserConsoleLogs();
+    }
+
 }
