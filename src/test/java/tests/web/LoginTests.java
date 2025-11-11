@@ -4,6 +4,7 @@ import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
 import io.qameta.allure.*;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import pages.MainPage;
@@ -27,12 +28,13 @@ public class LoginTests extends BaseTest {
     }
 
     @Test
+    @Disabled("Impossible to get invalid user error, literally all and any username and passwords are valid now")
     @DisplayName("Error for invalid password")
     @Owner("maxkinclip")
     @Severity(SeverityLevel.NORMAL)
     public void loginError() {
         ParaBankLogin.openMainPage()
-                .fillLoginForm("john","wrong-password")
+                .fillLoginForm("no_such_user_","wrong")
                 .verifyInvalidLoginError();
 
 

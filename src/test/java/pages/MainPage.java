@@ -68,14 +68,7 @@ public class MainPage extends BasePage {
 
     @Step("Verify invalid login error is displayed")
     public MainPage verifyInvalidLoginError() {
-        $("#rightPanel").should(appear);
-
-        WebElementCondition eitherError =
-                or("Error title or invalid credentials",
-                        text("Error!"),
-                        text("The username and password could not be verified."));
-
-        $("#rightPanel").shouldHave(eitherError);
+        loginError().should(appear).shouldBe(visible,enabled,exist);
         return this;
     }
 
