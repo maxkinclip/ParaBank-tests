@@ -7,7 +7,6 @@ import pages.MainPage;
 import pages.OpenAccountPage;
 import tests.BaseTest;
 
-import static com.codeborne.selenide.Selenide.open;
 
 @Epic("ParaBank UI")
 @Feature("Account Management")
@@ -24,10 +23,10 @@ public class OpeningAccountTests extends BaseTest {
         ParaBankLogin.openMainPage()
                 .fillLoginForm("john","demo")
                 .loginVerification();
-        open("/parabank/openaccount.htm");
+        ParaBankOpenAccount.openAccountPage();
         ParaBankOpenAccount.selectTypeByIndex(0);
-        ParaBankOpenAccount.selectAccountByIndex(1);
-        ParaBankOpenAccount.clickOpenNewAccountButton();
+        ParaBankOpenAccount.selectAccountByIndex(0);
+        ParaBankOpenAccount.submitOpen();
         ParaBankOpenAccount.accountResult();
     }
 
@@ -39,10 +38,10 @@ public class OpeningAccountTests extends BaseTest {
         ParaBankLogin.openMainPage()
                 .fillLoginForm("john","demo")
                 .loginVerification();
-        open("/parabank/openaccount.htm");
+        ParaBankOpenAccount.openAccountPage();
         ParaBankOpenAccount.selectTypeByIndex(1);
-        ParaBankOpenAccount.selectAccountByIndex(1);
-        ParaBankOpenAccount.clickOpenNewAccountButton();
+        ParaBankOpenAccount.selectAccountByIndex(0);
+        ParaBankOpenAccount.submitOpen();
         ParaBankOpenAccount.accountResult();
     }
 }

@@ -4,6 +4,7 @@ import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.WebDriverRunner;
 import io.qameta.allure.Step;
 
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -63,13 +64,20 @@ public class MainPage extends BasePage {
         return null;
     }
 
-    @Step("Login error")
+    @Step("Receive login error")
     public MainPage verifyLoginError() {
         String expectedUrl = "https://parabank.parasoft.com/parabank/login.htm";
         String actualUrl = WebDriverRunner.url().split(";")[0];
         assertEquals(expectedUrl, actualUrl,
                 "User should be on the login page after failed main page login");
+        loginError().should(appear);
         return this;
+    }
+
+    public SelenideElement loginError() {
+        return $("#rightPanel .title")
+                .should(appear)
+                .shouldHave(or("title", text("Error!"), text("The username and password could not be verified.")));
     }
 
     @Step("Fill Login Form")

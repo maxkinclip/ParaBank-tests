@@ -64,7 +64,7 @@ public class OpenAccountTestsAPI {
         System.out.println("Response body:\n" + body);
 
         if (statusCode == 400 && body.contains("Could not create new account")) {
-            System.out.println("⚠️ ParaBank refused account creation (likely demo limit reached). Test skipped.");
+            System.out.println("ParaBank refused account creation (demo limit reached). Test skipped.");
         } else {
             assertThat(statusCode).isEqualTo(200);
             assertThat(body).contains("<account>");
@@ -102,7 +102,7 @@ public class OpenAccountTestsAPI {
 
 
         if (statusCode == 400 && body.contains("Could not create new account")) {
-            System.out.println("⚠️ ParaBank refused Savings account creation (likely demo limit reached). Test skipped.");
+            System.out.println("ParaBank refused Savings account creation (demo limit reached). Test skipped.");
         } else {
             assertThat(statusCode).isEqualTo(200);
             assertThat(body).contains("<account>");

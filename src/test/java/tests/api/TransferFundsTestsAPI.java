@@ -70,10 +70,10 @@ public class TransferFundsTestsAPI {
 
 
         if (code == 400 && body != null && body.contains("Insufficient funds")) {
-            System.out.println("⚠️ Transfer refused: Insufficient funds. Test skipped as acceptable demo behavior.");
+            System.out.println("Transfer refused: Insufficient funds. Test skipped as acceptable demo behavior.");
         } else if (code == 400 && body != null && body.toLowerCase().contains("could not find account")) {
             throw new AssertionError("Bank rejected transfer: " + body +
-                    " (the demo environment may have rotated account IDs).");
+                    " (demo environment may have rotated account IDs).");
         } else {
             assertThat(code).isEqualTo(200);
 

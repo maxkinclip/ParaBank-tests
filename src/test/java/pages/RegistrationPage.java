@@ -8,6 +8,7 @@ import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selectors.byId;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.sleep;
 
 public class RegistrationPage extends BasePage {
 
@@ -24,6 +25,7 @@ public class RegistrationPage extends BasePage {
 
     @Step("Fill first name field with '{firstName}'")
     public RegistrationPage fillFirstName(String firstName) {
+        customerFirstNameField().clear();
         customerFirstNameField().sendKeys(firstName);
         return this;
     }
@@ -37,6 +39,7 @@ public class RegistrationPage extends BasePage {
 
     @Step("Fill last name field with '{lastName}'")
     public RegistrationPage fillLastName(String lastName) {
+        CustomerLastNameField().clear();
         CustomerLastNameField().sendKeys(lastName);
         return this;
     }
@@ -47,6 +50,7 @@ public class RegistrationPage extends BasePage {
 
     @Step("Fill address field with '{address}'")
     public RegistrationPage fillAddressField(String address) {
+        CustomerAddressField().clear();
         CustomerAddressField().sendKeys(address);
         return this;
     }
@@ -57,6 +61,7 @@ public class RegistrationPage extends BasePage {
 
     @Step("Fill city field with '{city}'")
     public RegistrationPage fillCityField(String city) {
+        CustomerCityField().clear();
         CustomerCityField().sendKeys(city);
         return this;
     }
@@ -67,6 +72,7 @@ public class RegistrationPage extends BasePage {
 
     @Step("Fill state field with '{state}'")
     public RegistrationPage fillStateField(String state) {
+        CustomerStateField().clear();
         CustomerStateField().sendKeys(state);
         return this;
     }
@@ -76,6 +82,7 @@ public class RegistrationPage extends BasePage {
     }
     @Step("Fill zip code field with '{zipCode}'")
     public RegistrationPage fillZipCodeField(String zipCode) {
+        CustomerZipCodeField().clear();
         CustomerZipCodeField().sendKeys(zipCode);
         return this;
     }
@@ -86,6 +93,7 @@ public class RegistrationPage extends BasePage {
 
     @Step("Fill phoneNumber field with '{phoneNumber}'")
     public RegistrationPage fillPhoneNumberField(String phoneNumber) {
+        CustomerPhoneNumberField().clear();
         CustomerPhoneNumberField().sendKeys(phoneNumber);
         return this;
     }
@@ -96,6 +104,7 @@ public class RegistrationPage extends BasePage {
 
     @Step("Fill SSN number field with '{ssn}'")
     public RegistrationPage fillCustomerSsnField(String ssn) {
+        CustomerSsnField().clear();
         CustomerSsnField().sendKeys(ssn);
         return this;
     }
@@ -106,6 +115,7 @@ public class RegistrationPage extends BasePage {
 
     @Step("Fill username field with '{username}'")
     public RegistrationPage fillCustomerUsernameField(String username) {
+        CustomerUsernameField().clear();
         CustomerUsernameField().sendKeys(username);
         return this;
     }
@@ -116,6 +126,7 @@ public class RegistrationPage extends BasePage {
 
     @Step("Fill State field with '{password}'")
     public RegistrationPage fillCustomerPasswordField(String password) {
+        CustomerPasswordField().clear();
         CustomerPasswordField().sendKeys(password);
         return this;
     }
@@ -126,7 +137,8 @@ public class RegistrationPage extends BasePage {
 
     @Step("Fill password validation field with '{repeatedPassword}'")
     public RegistrationPage fillCustomerPasswordValidationField(String repeatedPassword) {
-        CustomerPasswordValidationField().sendKeys(repeatedPassword);
+        CustomerPasswordValidationField().clear();
+        CustomerPasswordValidationField().sendKeys(repeatedPassword);;
         return this;
     }
     public SelenideElement CustomerPasswordValidationField() {
@@ -173,7 +185,76 @@ public class RegistrationPage extends BasePage {
         return this;
     }
 
+
+
+    @Step("Submit registration with automatic retry on duplicate username")
+    public RegistrationPage submitWithRetry(String baseUsername, String password, int retries) {
+        for (int attempt = 1; attempt <= retries; attempt++) {
+            clickSubmitRegistrationFormButton();
+
+
+            long deadline = System.currentTimeMillis() + 6000;
+            boolean handled = false;
+
+            while (System.currentTimeMillis() < deadline) {
+
+                if ($(byText("Your account was created successfully. You are now logged in.")).exists()
+                        || com.codeborne.selenide.WebDriverRunner.url().contains("/overview.htm")
+                        || $("#rightPanel").has(text("Welcome"))) {
+
+                    return this;
+                }
+
+
+                if ($("#customer\\.username\\.errors").exists()
+                        && $("#customer\\.username\\.errors").has(text("already exists"))) {
+                    System.out.println("Username already exists. Retrying with a new one...");
+                    String newUsername = baseUsername + "_" + attempt + "_" + (System.currentTimeMillis() % 10000);
+
+                    CustomerUsernameField().clear();
+                    CustomerUsernameField().sendKeys(newUsername);
+
+
+                    CustomerPasswordField().clear();
+                    CustomerPasswordField().sendKeys(password);
+                    CustomerPasswordValidationField().clear();
+                    CustomerPasswordValidationField().sendKeys(password);
+
+                    handled = true;
+                    break;
+                }
+
+
+                if ($("h1.title").exists() && $("h1.title").has(text("Error!"))) {
+                    System.out.println("ParaBank internal error page detected, re-opening registration...");
+                    openRegistrationPage();
+                    handled = true;
+                    break;
+                }
+
+                sleep(200);
+            }
+
+            if (handled) {
+                continue;
+            }
+
+
+            if (com.codeborne.selenide.WebDriverRunner.url().contains("/overview.htm")
+                    || $("#rightPanel").has(text("Welcome"))
+                    || $(byText("Your account was created successfully. You are now logged in.")).exists()) {
+                return this;
+            }
+
+
+            System.out.println("No definitive outcome detected, retrying submit (attempt " + attempt + " of " + retries + ")...");
+        }
+
+
+        throw new AssertionError("Registration failed after retries");
+    }
 }
+
 
 
 

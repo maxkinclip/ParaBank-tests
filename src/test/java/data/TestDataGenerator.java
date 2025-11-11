@@ -156,7 +156,7 @@ public class TestDataGenerator {
     }
 
     public static String generateUsername(String firstName, String lastName) {
-        int year = faker.number().numberBetween(1930, 2030);
+        int year = faker.number().numberBetween(1000, 2030);
         return (firstName + "." + lastName + year)
                 .replaceAll("[^A-Za-zА-Яа-я0-9.]", "")
                 .toLowerCase();

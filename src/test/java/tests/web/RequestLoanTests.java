@@ -7,7 +7,6 @@ import pages.MainPage;
 import pages.RequestLoanPage;
 import tests.BaseTest;
 
-import static com.codeborne.selenide.Selenide.open;
 
 @Epic("ParaBank UI")
 @Feature("Loan Requests")
@@ -24,10 +23,11 @@ public class RequestLoanTests extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     public void loanApproved() {
         ParaBankLogin.openMainPage()
-                .fillLoginForm("john","demo")
+                .fillLoginForm("john", "demo")
                 .loginVerification();
-        open("/parabank/requestloan.htm");
+
         ParaBankLoanRequest
+                .openRequestLoanPage()
                 .fillLoanAmountField(1000)
                 .fillDownPaymentField(50)
                 .selectLoanAccount(0)
@@ -41,15 +41,16 @@ public class RequestLoanTests extends BaseTest {
     @Severity(SeverityLevel.NORMAL)
     public void loanDeniedInsufficientFunds() {
         ParaBankLogin.openMainPage()
-                .fillLoginForm("john","demo")
+                .fillLoginForm("john", "demo")
                 .loginVerification();
-        open("/parabank/requestloan.htm");
+
         ParaBankLoanRequest
+                .openRequestLoanPage()
                 .fillLoanAmountField(999999999)
                 .fillDownPaymentField(999999999)
                 .selectLoanAccount(0)
                 .clickApplyButton()
-                .loanDeniedInsufficientFundsMessage();
+                .receiveLoanDeniedInsufficientFundsMessage();
     }
 
 }

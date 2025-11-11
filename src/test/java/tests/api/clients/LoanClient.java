@@ -11,21 +11,12 @@ public class LoanClient extends BaseApi {
     public Response requestLoan(LoanRequestModel req) {
         return RestAssured.given()
                 .spec(requestSpec)
-                .queryParam("customerId",   req.getCustomerId())
-                .queryParam("amount",       req.getAmount())
-                .queryParam("downPayment",  req.getDownPayment())
+                .queryParam("customerId", req.getCustomerId())
+                .queryParam("amount", req.getAmount())
+                .queryParam("downPayment", req.getDownPayment())
                 .queryParam("fromAccountId", req.getFromAccountId())
                 .when()
                 .post("/requestLoan");
     }
 
-
-    public Response requestLoan(long customerId, double amount, double downPayment, String fromAccountId) {
-        return requestLoan(LoanRequestModel.builder()
-                .customerId(customerId)
-                .amount(amount)
-                .downPayment(downPayment)
-                .fromAccountId(fromAccountId)
-                .build());
-    }
 }

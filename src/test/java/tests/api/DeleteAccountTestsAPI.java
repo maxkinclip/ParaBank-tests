@@ -32,7 +32,7 @@ public class DeleteAccountTestsAPI {
     @Owner("maxkinclip")
     @Severity(SeverityLevel.CRITICAL)
     public void deleteAccountSuccess() {
-        // Arrange
+
         Response loginRes = customerClient.login("john", "demo");
         assertThat(loginRes.statusCode()).isEqualTo(200);
         CustomerModel customer = XmlUtils.fromXml(loginRes, CustomerModel.class);

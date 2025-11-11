@@ -33,7 +33,9 @@ public class RegistrationTests extends BaseTest {
                 userData.getPassword(),
                 userData.getPasswordValidation()
 
-        ).clickSubmitRegistrationFormButton().verifySuccessfulRegistrationMessage();
+        )
+                .submitWithRetry(userData.getUserName(), userData.getPassword(), 3)
+                .verifySuccessfulRegistrationMessage();
     }
 
 

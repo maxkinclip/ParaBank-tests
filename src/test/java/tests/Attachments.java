@@ -3,10 +3,10 @@ package tests;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.WebDriverRunner;
 import io.qameta.allure.Allure;
+import io.qameta.allure.Attachment;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 
-import java.nio.charset.StandardCharsets;
 import java.util.stream.Collectors;
 
 public class Attachments {
@@ -37,5 +37,15 @@ public class Attachments {
         } catch (Throwable ignored) {
 
         }
+    }
+
+    @Attachment(value = "Video", type = "text/html", fileExtension = ".html")
+    public static String addVideo() {
+        if (WebDriverRunner.getWebDriver() instanceof org.openqa.selenium.remote.RemoteWebDriver driver) {
+            String sessionId = driver.getSessionId().toString();
+            String videoUrl = "https://selenoid.autotests.cloud/video/" + sessionId + ".mp4";
+            return "<html><body><video width='100%' controls autoplay><source src='" + videoUrl + "' type='video/mp4'></video></body></html>";
+        }
+        return "";
     }
 }

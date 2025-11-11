@@ -15,8 +15,4 @@ public class XmlUtils {
             throw new RuntimeException("Failed to parse XML response to " + clazz.getSimpleName(), e);
         }
     }
-
-    public static String getValue(Response response, String path) {
-        return response.xmlPath().getString(path);
-    }
 }
