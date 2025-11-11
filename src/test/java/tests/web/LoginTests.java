@@ -33,7 +33,7 @@ public class LoginTests extends BaseTest {
     public void loginError() {
         ParaBankLogin.openMainPage()
                 .fillLoginForm("john","wrong-password")
-                .verifyLoginError();
+                .verifyInvalidLoginError();
 
 
     }

@@ -1,0 +1,14 @@
+{
+  "telegram": {
+    "token": "${TELEGRAM_TOKEN}",
+    "chat": "${TELEGRAM_CHAT_ID}"
+  },
+  "project": {
+    "name": "ParaBank-tests"
+  },
+  "report": {
+    "type": "allure",
+    "reportUrl": "${BUILD_URL}allure/",
+    "results": "build/allure-results"
+  }
+}

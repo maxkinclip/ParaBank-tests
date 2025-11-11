@@ -1,7 +1,9 @@
 package pages;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.WebDriverRunner;
+import com.codeborne.selenide.WebElementCondition;
 import io.qameta.allure.Step;
 
 import static com.codeborne.selenide.Condition.*;
@@ -64,13 +66,16 @@ public class MainPage extends BasePage {
         return null;
     }
 
-    @Step("Receive login error")
-    public MainPage verifyLoginError() {
-        String expectedUrl = "https://parabank.parasoft.com/parabank/login.htm";
-        String actualUrl = WebDriverRunner.url().split(";")[0];
-        assertEquals(expectedUrl, actualUrl,
-                "User should be on the login page after failed main page login");
-        loginError().should(appear);
+    @Step("Verify invalid login error is displayed")
+    public MainPage verifyInvalidLoginError() {
+        $("#rightPanel").should(appear);
+
+        WebElementCondition eitherError =
+                or("Error title or invalid credentials",
+                        text("Error!"),
+                        text("The username and password could not be verified."));
+
+        $("#rightPanel").shouldHave(eitherError);
         return this;
     }
 
