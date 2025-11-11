@@ -11,6 +11,14 @@ build/
 
 ### Gradle ###
 .gradle
+gradle/
+gradlew
+gradlew.bat
+gradle.properties
+settings.gradle
 
 ### Logs ###
 *.log
+
+### macOS ###
+.DS_Store
