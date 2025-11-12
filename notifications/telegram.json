@@ -1,0 +1,26 @@
+{
+  "base": {
+    "project": "ParaBank",
+    "environment": "some env",
+    "comment": "some comment",
+    "language": "en",
+    "allureFolder": "build/allure-report/",
+    "enableChart": true,
+    "enableSuitesPublishing": true,
+    "logo": "logo.png",
+    "durationFormat": "HH:mm:ss.SSS",
+    "customData": {
+      "Total scenarious": "value1",
+      "Total passed": "value2",
+      "Total failed": "value3"
+    },
+    "reportLink": ""
+  },
+  "telegram": {
+    "token": "",
+    "chat": "",
+    "topic": "",
+    "replyTo": "",
+    "templatePath": "/templates/telegram.ftl"
+  }
+}
