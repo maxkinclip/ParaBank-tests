@@ -28,7 +28,6 @@ public class LoginTests extends BaseTest {
     }
 
     @Test
-    @Disabled("Impossible to get invalid user error, literally all and any username and passwords are valid now")
     @DisplayName("Error for invalid password")
     @Owner("maxkinclip")
     @Severity(SeverityLevel.NORMAL)
