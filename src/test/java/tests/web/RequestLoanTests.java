@@ -1,6 +1,7 @@
 package tests.web;
 
 import io.qameta.allure.*;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import pages.MainPage;
@@ -18,6 +19,7 @@ public class RequestLoanTests extends BaseTest {
     RequestLoanPage ParaBankLoanRequest = new RequestLoanPage();
 
     @Test
+    @Disabled("Impossible to get the loan approved")
     @DisplayName("Request loan successfully with valid data")
     @Owner("maxkinclip")
     @Severity(SeverityLevel.CRITICAL)
