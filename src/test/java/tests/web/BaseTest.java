@@ -29,14 +29,25 @@ public class BaseTest {
         String remoteUrl     = System.getProperty("remote", "");
         boolean headless     = Boolean.parseBoolean(System.getProperty("headless", "false"));
 
-        Configuration.baseUrl       = baseUrl;
-        Configuration.browser       = browser;
-        Configuration.browserSize   = browserSize;
-        Configuration.headless      = headless;
-        Configuration.pageLoadStrategy = "normal";
-        Configuration.timeout = 8000;
+        System.out.println("=== RUNTIME CONFIG ===");
+        System.out.println("baseUrl       = " + baseUrl);
+        System.out.println("browser       = " + browser);
+        System.out.println("browserSize   = " + browserSize);
+        System.out.println("browserVer    = " + browserVer);
+        System.out.println("remoteUrl     = " + remoteUrl);
+        System.out.println("headless      = " + headless);
+        System.out.println("======================");
 
-        if (!browserVer.isBlank()) Configuration.browserVersion = browserVer;
+        Configuration.baseUrl         = baseUrl;
+        Configuration.browser         = browser;
+        Configuration.browserSize     = browserSize;
+        Configuration.headless        = headless;
+        Configuration.pageLoadStrategy = "normal";
+        Configuration.timeout         = 8000;
+
+        if (!browserVer.isBlank()) {
+            Configuration.browserVersion = browserVer;
+        }
 
         if (!remoteUrl.isBlank()) {
             Configuration.remote = remoteUrl;
@@ -64,16 +75,17 @@ public class BaseTest {
 
             Configuration.browserCapabilities = chrome;
         } else {
-            System.out.println("LOCAL MODE (no -Dremote passed)");
+            System.out.println("LOCAL MODE (no -Dremote passed AND no remote in properties)");
         }
 
-        com.codeborne.selenide.logevents.SelenideLogger.addListener("AllureSelenide",
+        com.codeborne.selenide.logevents.SelenideLogger.addListener(
+                "AllureSelenide",
                 new io.qameta.allure.selenide.AllureSelenide()
                         .screenshots(true)
                         .savePageSource(false)
-                        .includeSelenideSteps(true));
+                        .includeSelenideSteps(true)
+        );
     }
-
 
     @BeforeEach
     void startCleanOnLogin() {
