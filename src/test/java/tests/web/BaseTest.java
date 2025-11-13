@@ -2,6 +2,7 @@ package tests;
 
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.WebDriverRunner;
+import config.EnvConfig;
 import io.qameta.allure.Step;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -19,6 +20,8 @@ public class BaseTest {
 
     @BeforeAll
     static void setUp() {
+        EnvConfig.loadEnvironment();
+
         String baseUrl       = System.getProperty("baseUrl", "https://parabank.parasoft.com");
         String browser       = System.getProperty("browser", "chrome");
         String browserSize   = System.getProperty("browserSize", "1920x1080");
