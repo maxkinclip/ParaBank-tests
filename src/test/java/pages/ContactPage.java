@@ -78,11 +78,6 @@ public class ContactPage extends BasePage {
 
     }
 
-    @Step("Verify that the message was sent to the Customer Care")
-    public ContactPage verifyMessageToCustomerCare() {
-        theMessageWasSentAlert().click();
-        return this;
-    }
 
     public SelenideElement theMessageWasSentAlert() {
         return Selenide.$(byText("A Customer Care Representative will be contacting you."));

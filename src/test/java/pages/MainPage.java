@@ -100,24 +100,6 @@ public class MainPage extends BasePage {
 
 
 
-    @Step("Click forgot login link")
-    public MainPage clickForgotLoginLink() {
-        forgotLoginLink().click();
-        return this;
-    }
-
-    @Step("Click register link")
-    public MainPage clickRegisterLink() {
-        registerLink().click();
-        return this;
-    }
-
-    @Step("Click contact button")
-    public MainPage clickContactButton() {
-        contactButton().click();
-        return this;
-    }
-
 
 
 

@@ -191,17 +191,4 @@ public class TestDataGenerator {
 
     }
 
-    public static TransferRequestModel generateTransfer(int from, int to) {
-        return TransferRequestModel.builder()
-                .fromAccountId(from)
-                .toAccountId(to)
-                .amount(faker.number().randomDouble(2, 1, 500))
-                .build();
-    }
-
-    public static int randomAccountId() {
-
-        int[] accountIds = {13344, 13345, 13346};
-        return accountIds[new Random().nextInt(accountIds.length)];
-    }
 }
